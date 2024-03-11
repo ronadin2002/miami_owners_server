@@ -1,11 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 import requests
 
 app = FastAPI()
 
-
-@app.get("/get-address/{address}")
-async def get_address(address: str):
+@app.get("/get-address")
+async def get_address(address: str = Query(..., description="The address to query")):
     url = f"https://www.miamidade.gov/Apps/PA/PApublicServiceProxy/PaServicesProxy.ashx?Operation=GetAddress&clientAppName=PropertySearch&myUnit=&from=1&myAddress={address}&to=200"
 
     try:
@@ -39,5 +38,3 @@ async def get_address(address: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
-
-
